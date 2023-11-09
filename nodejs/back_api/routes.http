@@ -1,0 +1,69 @@
+
+GET http://{{host}}:{{port}}/teste
+Authorization: Basic teste:teste
+
+###
+
+# @name login
+POST http://{{host}}:{{port}}/login
+Connection: keep-alive
+Content-Type: application/json
+
+{
+    "user":"{{user}}",
+    "pass":"{{pass}}"
+}
+
+###
+
+@jwtoken = {{login.response.body.data.token}}
+
+GET http://{{host}}:{{port}}/products 
+Connection: keep-alive
+Authorization: Bearer {{jwtoken}}
+
+###
+
+GET http://{{host}}:{{port}}/products/34
+Connection: keep-alive
+Authorization: Bearer {{jwtoken}}
+
+###
+
+GET http://{{host}}:{{port}}/search?q=não
+Connection: keep-alive
+Authorization: Bearer {{jwtoken}}
+
+###
+
+POST http://{{host}}:{{port}}/products 
+Connection: keep-alive
+Content-Type: application/json
+Authorization: Bearer {{jwtoken}}
+
+{
+    "nome": "Insert iProway",
+    "preco": 999.11,
+    "fabricante": "Aula de Node.js",
+    "descricao": "Não é um insert manual"
+}
+
+###
+
+PUT http://{{host}}:{{port}}/products/34
+Connection: keep-alive
+Content-Type: application/json
+Authorization: Bearer {{jwtoken}}
+
+{
+    "nome": "Update Proway",
+    "preco": 111.99,
+    "fabricante": "Aula de Node.js",
+    "descricao": "Update usando REST Client 34"
+}
+
+###
+
+DELETE http://{{host}}:{{port}}/products/99
+Connection: keep-alive
+Authorization: Bearer {{jwtoken}}
